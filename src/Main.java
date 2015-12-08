@@ -11,6 +11,7 @@ public class Main {
         
         coinsph cp = new coinsph();
         
-        System.out.println(cp.getBidPrice("USD"));
+        System.out.println("BID: " + cp.getBidPrice("USD"));
+        System.out.println("ASK: " + cp.getAskPrice("USD"));
     }
 }

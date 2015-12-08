@@ -41,7 +41,6 @@ public class coinsph {
     public String getBidPrice(String currency) {
         String line = "";
         line = this.httpGET(CoinsPhMarketsURL);
-        System.out.println(line);
         MarketQuote obj = gson.fromJson(line, MarketQuote.class);
 
         for(int i = 0; i < obj.getMarkets().size(); i++){
@@ -50,6 +49,34 @@ public class coinsph {
             }
         }
         return obj.getMarkets().get(4).getBid();//default to Philippine Peso
+    }
+    
+    /**
+     * This method gets the current ask price of the currency provided in the 
+     * parameter.
+     * CLP - Chilean Peso
+     * HKD - Hongkong Dollar
+     * IDR - Indonesian Rupiah
+     * MYR - Malaysian Ringgit
+     * PHP - Philippine Peso
+     * THB - Thailand Baht
+     * TWD - Taiwan Dollar
+     * USD - US Dollar
+     * VND - Vietnamese Dong
+     * @param currency - Currency bid price
+     * @return 
+     */
+    public String getAskPrice(String currency) {
+        String line = "";
+        line = this.httpGET(CoinsPhMarketsURL);
+        MarketQuote obj = gson.fromJson(line, MarketQuote.class);
+
+        for(int i = 0; i < obj.getMarkets().size(); i++){
+            if(obj.getMarkets().get(i).getSymbol().equals("BTC-"+ currency)){
+                return obj.getMarkets().get(i).getAsk();
+            }
+        }
+        return obj.getMarkets().get(4).getAsk();//default to Philippine Peso
     }
 
     private String httpGET(String url) {
@@ -63,9 +90,6 @@ public class coinsph {
             // add request header
             request.addHeader("User-Agent", USER_AGENT);
             HttpResponse response = client.execute(request);
-
-            System.out.println("Response Code : "
-                    + response.getStatusLine().getStatusCode());
 
             BufferedReader rd = new BufferedReader(
                     new InputStreamReader(response.getEntity().getContent()));
